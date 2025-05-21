@@ -860,7 +860,7 @@ Hooks.on("BG3HotbarInit", async (BG3Hotbar) => {
         });
         if(promises.length) {
             await Promise.all(promises).then(async (values) => {
-                game.settings.set(BG3CONFIG.MODULE_NAME, 'migrationV3ToV4Client', true);
+                game.settings.set(MODULE_NAME, 'migrationV3ToV4Client', true);
                 console.log('BG3 Inspired Hotbar: Migration V3 to V4 done.');
             })
         }
