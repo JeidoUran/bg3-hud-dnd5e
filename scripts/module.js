@@ -1,8 +1,4 @@
-const MODULE_NAME = "bg3-hud-dnd5e",
-    maxActions = {
-        action: 3,
-        reaction: 1
-    };
+const MODULE_NAME = "bg3-hud-dnd5e";
 
 Hooks.on("BG3HotbarInit", async (BG3Hotbar) => {
     const [BG3CONFIG, BG3UTILS] = BG3Hotbar.getConfig();
@@ -420,7 +416,7 @@ Hooks.on("BG3HotbarInit", async (BG3Hotbar) => {
                 })
             }
         } else {
-            const compendium = await game.packs.get("bg3-inspired-hotbar.bg3-inspired-hud");
+            const compendium = await game.packs.get("bg3-hud-dnd5e.bg3-inspired-hud");
             if(!compendium) return ids;
             ids = compendium.folders.find(f => f.name === 'Common Actions').contents.map(m => m.uuid);
         }
@@ -759,8 +755,8 @@ Hooks.on("BG3HotbarInit", async (BG3Hotbar) => {
     BG3Hotbar.overrideClass('BG3TooltipManager', '_tooltipRangeDamage', _tooltipRangeDamage);
     BG3Hotbar.overrideClass('BG3TooltipManager', 'extendTooltipInit', extendTooltipInit);
 
-    ui.BG3HOTBAR.tooltipManager._saveEnrichers();
-    ui.BG3HOTBAR.tooltipManager.extendTooltipInit();
+    // ui.BG3HOTBAR.tooltipManager._saveEnrichers();
+    // ui.BG3HOTBAR.tooltipManager.extendTooltipInit();
     
     // Add Tooltip to Macro
     const customRichTooltip = async function (enrichmentOptions={}) {
