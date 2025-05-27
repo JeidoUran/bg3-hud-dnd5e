@@ -816,7 +816,7 @@ Hooks.on("BG3HotbarInit", async (BG3Hotbar) => {
 
     game.settings.menus.get(BG3CONFIG.MODULE_NAME + ".chooseCPRActions").type = DND5ECPRActionsDialog;
     game.settings.menus.get(BG3CONFIG.MODULE_NAME + ".chooseCPRActions").visible = () => game.modules.get("chris-premades")?.active;
-    game.settings.settings.get(BG3CONFIG.MODULE_NAME + ".choosenCPRActions").default = ["9wbU6kYxfAaRFrbI", "ga6foNaesV3UJFKm", "eqOOv3smPuxTq7Xm", "pmn1iLabeps5aPtW", "nmkcJWUba7hyi5m5", "34jFXjMOseErle3M"]
+    game.settings.settings.get(BG3CONFIG.MODULE_NAME + ".choosenCPRActions").default = ["9wbU6kYxfAaRFrbI", "ga6foNaesV3UJFKm", "eqOOv3smPuxTq7Xm", "pmn1iLabeps5aPtW", "nmkcJWUba7hyi5m5", "34jFXjMOseErle3M"];
 
     Hooks.on("renderSettingsConfig", (app, html, data) => {
         const detailsSettings = [
