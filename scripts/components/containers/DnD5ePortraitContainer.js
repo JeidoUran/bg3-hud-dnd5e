@@ -1,4 +1,5 @@
 import { PortraitHealth } from './PortraitHealth.js';
+import { DeathSaves } from './DeathSaves.js';
 
 /**
  * D&D 5e Portrait Container
@@ -95,6 +96,12 @@ export async function createDnD5ePortraitContainer() {
         damageOverlay.style.opacity = '1';
         healthOverlay.appendChild(damageOverlay);
 
+        // Apply alpha mask so overlays only affect non-transparent pixels of the image
+        portraitImageSubContainer.setAttribute('data-bend-mode', 'true');
+        // Use the resolved img.src (absolute URL) and quote it for CSS parsing safety
+        portraitImageSubContainer.style.setProperty('--bend-img', `url("${img.src}")`);
+        this.element.classList.add('use-bend-mask');
+
         // Assemble portrait image structure
         portraitImageSubContainer.appendChild(img);
         portraitImageSubContainer.appendChild(healthOverlay);
@@ -110,7 +117,13 @@ export async function createDnD5ePortraitContainer() {
         const healthElement = await this.components.health.render();
         this.element.appendChild(healthElement);
 
-        // TODO: Add death saves container when actor is at 0 HP
+        // Add death saves component (shows only when HP <= 0 and character)
+        this.components.deathSaves = new DeathSaves({
+            actor: this.actor,
+            token: this.token
+        });
+        const deathSavesElement = await this.components.deathSaves.render();
+        this.element.appendChild(deathSavesElement);
 
         console.log('DnD5ePortraitContainer | Rendered with health:', health);
 
@@ -120,7 +133,7 @@ export async function createDnD5ePortraitContainer() {
     /**
      * Update only the health display without full re-render
      * This is called when HP changes to avoid re-rendering the entire UI
-     * Optimized: Only updates what changed (overlay height and text)
+     * Optimized: Only updates what changed (overlay height, text, and death saves)
      */
     async updateHealth() {
         if (!this.element || !this.token || !this.actor) {
@@ -139,6 +152,11 @@ export async function createDnD5ePortraitContainer() {
         // Update health text component (it has its own optimized update method)
         if (this.components.health && typeof this.components.health.updateHealth === 'function') {
             await this.components.health.updateHealth();
+        }
+
+        // Update death saves visibility (show/hide based on HP <= 0)
+        if (this.components.deathSaves && typeof this.components.deathSaves.update === 'function') {
+            await this.components.deathSaves.update();
         }
     }
 

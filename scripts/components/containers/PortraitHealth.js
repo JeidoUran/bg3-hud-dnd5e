@@ -86,14 +86,17 @@ export class PortraitHealth extends BG3Component {
         if (hpControls) {
             const hpControlsDiv = this.createElement('div', ['hp-controls']);
 
-            // Death button (set HP to 0)
+            // Death button (set HP and temp HP to 0)
             const deathBtn = this.createElement('div', ['hp-control-death']);
             deathBtn.innerHTML = '<i class="fas fa-skull" data-tooltip="Set to 0 HP"></i>';
             this.addEventListener(deathBtn, 'click', async (event) => {
                 event.preventDefault();
                 event.stopPropagation();
-                if (this.actor.system.attributes.hp.value > 0) {
-                    await this.actor.update({'system.attributes.hp.value': 0});
+                if (this.actor.system.attributes.hp.value > 0 || this.actor.system.attributes.hp.temp > 0) {
+                    await this.actor.update({
+                        'system.attributes.hp.value': 0,
+                        'system.attributes.hp.temp': 0
+                    });
                 }
             });
             hpControlsDiv.appendChild(deathBtn);
