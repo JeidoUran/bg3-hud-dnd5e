@@ -5,6 +5,7 @@
 
 import { createDnD5ePortraitContainer } from './components/containers/DnD5ePortraitContainer.js';
 import { createDnD5ePassivesContainer } from './components/containers/DnD5ePassivesContainer.js';
+import { DnD5eAutoSort } from './features/DnD5eAutoSort.js';
 
 const MODULE_ID = 'bg3-hud-dnd5e';
 
@@ -58,6 +59,10 @@ class DnD5eAdapter {
     constructor() {
         this.systemId = 'dnd5e';
         this.name = 'D&D 5e Adapter';
+        
+        // Initialize D&D 5e-specific features
+        this.autoSort = new DnD5eAutoSort();
+        console.log('BG3 HUD D&D 5e | DnD5eAdapter created with autoSort:', this.autoSort);
     }
 
     /**
