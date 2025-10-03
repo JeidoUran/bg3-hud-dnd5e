@@ -5,6 +5,7 @@
 
 import { createDnD5ePortraitContainer } from './components/containers/DnD5ePortraitContainer.js';
 import { createDnD5ePassivesContainer } from './components/containers/DnD5ePassivesContainer.js';
+import { DnD5eActionButtonsContainer } from './components/containers/DnD5eActionButtonsContainer.js';
 import { DnD5eAutoSort } from './features/DnD5eAutoSort.js';
 import { DnD5eAutoPopulate } from './features/DnD5eAutoPopulate.js';
 
@@ -37,10 +38,12 @@ Hooks.on('bg3HudReady', async (BG3HUD_API) => {
     
     // Register D&D 5e passives container (feat selection)
     BG3HUD_API.registerPassivesContainer(DnD5ePassivesContainer);
+    
+    // Register D&D 5e action buttons container (rest/turn buttons)
+    BG3HUD_API.registerActionButtonsContainer(DnD5eActionButtonsContainer);
 
     // TODO: Register other D&D 5e specific components
     // BG3HUD_API.registerContainer('deathSaves', DeathSavesContainer);
-    // BG3HUD_API.registerContainer('restTurn', RestTurnContainer);
 
     // Create and register the adapter instance
     const adapter = new DnD5eAdapter();
