@@ -93,7 +93,7 @@ export async function createDnD5ePassivesContainer() {
 
             // Create and show dialog
             const dialog = new SelectionDialog({
-                title: 'Select Passive Features',
+                title: game.i18n.localize('bg3-hud-dnd5e.Passives.SelectPassiveFeatures'),
                 items: items,
                 onSave: async (selectedIds) => {
                     await this._saveSelectedPassives(selectedIds);

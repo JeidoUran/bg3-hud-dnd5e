@@ -1,5 +1,7 @@
 import { InfoContainer } from '/modules/bg3-hud-core/scripts/components/containers/InfoContainer.js';
 
+const MODULE_ID = 'bg3-hud-dnd5e';
+
 /**
  * D&D 5e Info Container
  * Displays ability scores, skills, and saving throws
@@ -60,7 +62,7 @@ export class DnD5eInfoContainer extends InfoContainer {
             }
         } catch (err) {
             console.error('DnD5e Info | Initiative roll failed', err);
-            ui.notifications?.error('Failed to roll initiative');
+            ui.notifications?.error(game.i18n.localize(`${MODULE_ID}.Notifications.FailedToRollInitiative`));
         }
     }
 
@@ -111,12 +113,12 @@ export class DnD5eInfoContainer extends InfoContainer {
 
         const abilities = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
         const abilityNames = {
-            str: 'Strength',
-            dex: 'Dexterity',
-            con: 'Constitution',
-            int: 'Intelligence',
-            wis: 'Wisdom',
-            cha: 'Charisma'
+            str: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Strength`),
+            dex: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Dexterity`),
+            con: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Constitution`),
+            int: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Intelligence`),
+            wis: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Wisdom`),
+            cha: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Charisma`)
         };
 
         for (const abilityId of abilities) {
@@ -193,28 +195,28 @@ export class DnD5eInfoContainer extends InfoContainer {
 
         // Header
         const header = this.createElement('div', ['bg3-info-section-header']);
-        header.textContent = 'Skills';
+        header.textContent = game.i18n.localize(`${MODULE_ID}.Info.Skills`);
         column.appendChild(header);
 
         const skills = {
-            acr: { name: 'Acrobatics', ability: 'dex' },
-            ani: { name: 'Animal Handling', ability: 'wis' },
-            arc: { name: 'Arcana', ability: 'int' },
-            ath: { name: 'Athletics', ability: 'str' },
-            dec: { name: 'Deception', ability: 'cha' },
-            his: { name: 'History', ability: 'int' },
-            ins: { name: 'Insight', ability: 'wis' },
-            itm: { name: 'Intimidation', ability: 'cha' },
-            inv: { name: 'Investigation', ability: 'int' },
-            med: { name: 'Medicine', ability: 'wis' },
-            nat: { name: 'Nature', ability: 'int' },
-            prc: { name: 'Perception', ability: 'wis' },
-            prf: { name: 'Performance', ability: 'cha' },
-            per: { name: 'Persuasion', ability: 'cha' },
-            rel: { name: 'Religion', ability: 'int' },
-            slt: { name: 'Sleight of Hand', ability: 'dex' },
-            ste: { name: 'Stealth', ability: 'dex' },
-            sur: { name: 'Survival', ability: 'wis' }
+            acr: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Acrobatics`), ability: 'dex' },
+            ani: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.AnimalHandling`), ability: 'wis' },
+            arc: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Arcana`), ability: 'int' },
+            ath: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Athletics`), ability: 'str' },
+            dec: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Deception`), ability: 'cha' },
+            his: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.History`), ability: 'int' },
+            ins: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Insight`), ability: 'wis' },
+            itm: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Intimidation`), ability: 'cha' },
+            inv: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Investigation`), ability: 'int' },
+            med: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Medicine`), ability: 'wis' },
+            nat: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Nature`), ability: 'int' },
+            prc: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Perception`), ability: 'wis' },
+            prf: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Performance`), ability: 'cha' },
+            per: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Persuasion`), ability: 'cha' },
+            rel: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Religion`), ability: 'int' },
+            slt: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.SleightOfHand`), ability: 'dex' },
+            ste: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Stealth`), ability: 'dex' },
+            sur: { name: game.i18n.localize(`${MODULE_ID}.Info.SkillNames.Survival`), ability: 'wis' }
         };
 
         for (const [skillId, skillData] of Object.entries(skills)) {
@@ -283,17 +285,17 @@ export class DnD5eInfoContainer extends InfoContainer {
 
         // Header
         const header = this.createElement('div', ['bg3-info-section-header']);
-        header.textContent = 'Checks & Saves';
+        header.textContent = game.i18n.localize(`${MODULE_ID}.Info.ChecksSaves`);
         column.appendChild(header);
 
         const abilities = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
         const abilityNames = {
-            str: 'Strength',
-            dex: 'Dexterity',
-            con: 'Constitution',
-            int: 'Intelligence',
-            wis: 'Wisdom',
-            cha: 'Charisma'
+            str: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Strength`),
+            dex: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Dexterity`),
+            con: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Constitution`),
+            int: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Intelligence`),
+            wis: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Wisdom`),
+            cha: game.i18n.localize(`${MODULE_ID}.Info.Abilities.Charisma`)
         };
 
         for (const abilityId of abilities) {
@@ -307,7 +309,7 @@ export class DnD5eInfoContainer extends InfoContainer {
             const checkDiv = this.createElement('div', ['bg3-info-check']);
             
             const checkNameSpan = this.createElement('span', ['bg3-info-check-name']);
-            checkNameSpan.textContent = `${abilityNames[abilityId]} Check`;
+            checkNameSpan.textContent = game.i18n.format(`${MODULE_ID}.Info.CheckFormat`, { ability: abilityNames[abilityId] });
             
             const checkModifierSpan = this.createElement('span', ['bg3-info-check-modifier']);
             const checkMod = ability?.mod ?? 0;
@@ -358,7 +360,7 @@ export class DnD5eInfoContainer extends InfoContainer {
             const saveDiv = this.createElement('div', ['bg3-info-save']);
 
             const saveNameSpan = this.createElement('span', ['bg3-info-save-name']);
-            saveNameSpan.textContent = `${abilityNames[abilityId]} Save`;
+            saveNameSpan.textContent = game.i18n.format(`${MODULE_ID}.Info.SaveFormat`, { ability: abilityNames[abilityId] });
 
             const saveModifierSpan = this.createElement('span', ['bg3-info-save-modifier']);
             if (saveValue >= 0) {

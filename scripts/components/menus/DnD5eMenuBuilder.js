@@ -1,5 +1,7 @@
 import { MenuBuilder } from '/modules/bg3-hud-core/scripts/components/ui/MenuBuilder.js';
 
+const MODULE_ID = 'bg3-hud-dnd5e';
+
 /**
  * D&D 5e Menu Builder
  * Provides D&D 5e specific menu items for portrait, abilities, settings, and lock menus
@@ -20,7 +22,7 @@ export class DnD5eMenuBuilder extends MenuBuilder {
         // Token image option
         items.push({
             key: 'token',
-            label: 'Use Token Image',
+            label: game.i18n.localize(`${MODULE_ID}.Menu.UseTokenImage`),
             icon: 'fas fa-chess-pawn',
             onClick: async () => {
                 if (!useTokenImage) {
@@ -32,7 +34,7 @@ export class DnD5eMenuBuilder extends MenuBuilder {
         // Character portrait option
         items.push({
             key: 'portrait',
-            label: 'Use Character Portrait',
+            label: game.i18n.localize(`${MODULE_ID}.Menu.UseCharacterPortrait`),
             icon: 'fas fa-user',
             onClick: async () => {
                 if (useTokenImage) {
@@ -79,7 +81,7 @@ export class DnD5eMenuBuilder extends MenuBuilder {
 
             // Ability Check
             saveCheckSubmenu.buttons[`check${key.toUpperCase()}`] = {
-                label: 'Check',
+                label: game.i18n.localize(`${MODULE_ID}.Menu.Check`),
                 icon: 'fas fa-dice-d20',
                 value: abilityMod.value,
                 style: abilityMod.style,
@@ -106,7 +108,7 @@ export class DnD5eMenuBuilder extends MenuBuilder {
 
             // Saving Throw
             saveCheckSubmenu.buttons[`save${key.toUpperCase()}`] = {
-                label: 'Save',
+                label: game.i18n.localize(`${MODULE_ID}.Menu.Save`),
                 icon: 'fas fa-dice-d20',
                 value: saveMod.value,
                 style: saveMod.style,

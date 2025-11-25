@@ -4,6 +4,130 @@
     "RestTooltip": "Rest<br><span style='font-size: 0.85em; opacity: 0.8;'>Click: Choose rest type<br>Ctrl+Click: Short Rest<br>Alt+Click: Long Rest</span>",
     "ChooseRestType": "Choose a rest type:",
     "EndTurn": "End Turn"
+  },
+  "bg3-hud-dnd5e": {
+    "Settings": {
+      "AutoPopulateConfiguration": "Auto-populate Configuration",
+      "ConfigureAutoPopulateGrids": "Configure Auto-populate Grids",
+      "ConfigureGrids": "Configure Grids",
+      "ConfigureGridsHint": "Configure which item types to auto-populate in each grid when a token is created",
+      "AutoPopulatePassives": "Auto-populate Passives",
+      "AutoPopulatePassivesHint": "Automatically populate passives container with feats that have no activities when a token is created",
+      "ShowItemNames": "Show Item Names",
+      "ShowItemNamesHint": "Display item names on hotbar cells",
+      "ShowItemUses": "Show Item Uses",
+      "ShowItemUsesHint": "Display remaining uses on items that have limited uses",
+      "EnableAdvBtnsMidiQoL": "Enable Advantage/Disadvantage Buttons (Midi-QoL)",
+      "EnableAdvBtnsMidiQoLHint": "Add advantage/disadvantage buttons to the situational bonuses container when Midi-QoL is active",
+      "AutoPopulateOnTokenCreation": "Auto-populate on Token Creation",
+      "AutoPopulateOnTokenCreationHint": "Automatically populate hotbar grids with items when a token is created",
+      "AutoPopulateConfigurationHint": "Configure which item types to auto-populate in each grid (restricted to GM)"
+    },
+    "AutoPopulate": {
+      "Groups": {
+        "Combat": "Combat",
+        "Consumables": "Consumables",
+        "Wondrous": "Wondrous",
+        "Other": "Other"
+      },
+      "ItemTypes": {
+        "Weapons": "Weapons",
+        "FeaturesActions": "Features & Actions",
+        "Spells": "Spells",
+        "Ammunition": "Ammunition",
+        "Potions": "Potions",
+        "Poisons": "Poisons",
+        "Scrolls": "Scrolls",
+        "FoodDrink": "Food & Drink",
+        "Equipment": "Equipment",
+        "Wands": "Wands",
+        "Rods": "Rods",
+        "Trinkets": "Trinkets",
+        "Tools": "Tools",
+        "Loot": "Loot"
+      }
+    },
+    "Filters": {
+      "Action": "Action",
+      "BonusAction": "Bonus Action",
+      "Reaction": "Reaction",
+      "LegendaryAction": "Legendary Action",
+      "Feature": "Feature",
+      "Cantrip": "Cantrip",
+      "SpellLevel": "Spell Level",
+      "PactMagic": "Pact Magic"
+    },
+    "Info": {
+      "Skills": "Skills",
+      "ChecksSaves": "Checks & Saves",
+      "Abilities": {
+        "Strength": "Strength",
+        "Dexterity": "Dexterity",
+        "Constitution": "Constitution",
+        "Intelligence": "Intelligence",
+        "Wisdom": "Wisdom",
+        "Charisma": "Charisma"
+      },
+      "SkillNames": {
+        "Acrobatics": "Acrobatics",
+        "AnimalHandling": "Animal Handling",
+        "Arcana": "Arcana",
+        "Athletics": "Athletics",
+        "Deception": "Deception",
+        "History": "History",
+        "Insight": "Insight",
+        "Intimidation": "Intimidation",
+        "Investigation": "Investigation",
+        "Medicine": "Medicine",
+        "Nature": "Nature",
+        "Perception": "Perception",
+        "Performance": "Performance",
+        "Persuasion": "Persuasion",
+        "Religion": "Religion",
+        "SleightOfHand": "Sleight of Hand",
+        "Stealth": "Stealth",
+        "Survival": "Survival"
+      },
+      "CheckFormat": "{ability} Check",
+      "SaveFormat": "{ability} Save"
+    },
+    "Portrait": {
+      "SetTo0HP": "Set to 0 HP",
+      "FullHeal": "Full Heal"
+    },
+    "Menu": {
+      "UseTokenImage": "Use Token Image",
+      "UseCharacterPortrait": "Use Character Portrait",
+      "Check": "Check",
+      "Save": "Save"
+    },
+    "Passives": {
+      "SelectPassiveFeatures": "Select Passive Features"
+    },
+    "Advantage": {
+      "ADV": "ADV",
+      "DIS": "DIS",
+      "AdvTooltip": "Left-click to set Advantage to roll only.<br>Right-click to toggle.",
+      "DisTooltip": "Left-click to set Disadvantage to roll only.<br>Right-click to toggle."
+    },
+    "Tooltips": {
+      "ActiveEffect": "Active Effect"
+    },
+    "RestDialog": {
+      "ShortRest": "Short Rest",
+      "LongRest": "Long Rest"
+    },
+    "Notifications": {
+      "AutoPopulateSystemNotAvailable": "Auto-populate system not available",
+      "NoItemTypesAvailable": "No item types available for configuration",
+      "AutoPopulateConfigurationSaved": "Auto-populate configuration saved",
+      "ItemNotFound": "Item not found",
+      "ItemCannotBeUsed": "Item cannot be used",
+      "MacroNotFound": "Macro not found",
+      "ShortRestNotAvailable": "Short rest not available for this actor",
+      "LongRestNotAvailable": "Long rest not available for this actor",
+      "SlotOccupiedByTwoHandedWeapon": "This slot is occupied by a two-handed weapon",
+      "FailedToRollInitiative": "Failed to roll initiative"
+    }
   }
 }
-

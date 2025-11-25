@@ -198,7 +198,7 @@ class DnD5eAdapter {
     async _useItem(uuid, event) {
         const item = await fromUuid(uuid);
         if (!item) {
-            ui.notifications.warn('Item not found');
+            ui.notifications.warn(game.i18n.localize(`${MODULE_ID}.Notifications.ItemNotFound`));
             return;
         }
 
@@ -208,7 +208,7 @@ class DnD5eAdapter {
         if (typeof item.use === 'function') {
             await item.use({ event });
         } else {
-            ui.notifications.warn('Item cannot be used');
+            ui.notifications.warn(game.i18n.localize(`${MODULE_ID}.Notifications.ItemCannotBeUsed`));
         }
     }
 
@@ -220,7 +220,7 @@ class DnD5eAdapter {
     async _executeMacro(uuid) {
         const macro = await fromUuid(uuid);
         if (!macro) {
-            ui.notifications.warn('Macro not found');
+            ui.notifications.warn(game.i18n.localize(`${MODULE_ID}.Notifications.MacroNotFound`));
             return;
         }
 
@@ -231,10 +231,10 @@ class DnD5eAdapter {
     /**
      * Auto-populate passives on token creation
      * Selects all features that have no activities
-     * @param {Token} token - The newly created token
+     * @param {Actor} actor - The actor for the newly created token
+     * @param {TokenDocument} tokenDocument - The token document (optional)
      */
-    async autoPopulatePassives(token) {
-        const actor = token.actor;
+    async autoPopulatePassives(actor, tokenDocument = null) {
         if (!actor) return;
 
         // Check if auto-populate passives is enabled

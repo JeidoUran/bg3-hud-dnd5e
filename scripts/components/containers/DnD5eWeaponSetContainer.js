@@ -147,7 +147,7 @@ export async function createDnD5eWeaponSetContainer() {
         shouldPreventDrop(targetCell) {
             // Prevent drop on locked cells (two-handed duplicates)
             if (this.isCellLocked(targetCell)) {
-                ui.notifications.warn('This slot is occupied by a two-handed weapon');
+                ui.notifications.warn(game.i18n.localize('bg3-hud-dnd5e.Notifications.SlotOccupiedByTwoHandedWeapon'));
                 return true;
             }
             return false;

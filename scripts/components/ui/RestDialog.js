@@ -3,6 +3,8 @@
  * Allows player to choose between Short Rest and Long Rest
  * Uses BG3 HUD dialog styling
  */
+const MODULE_ID = 'bg3-hud-dnd5e';
+
 export class RestDialog extends foundry.applications.api.ApplicationV2 {
     constructor(options = {}) {
         super(options);
@@ -55,7 +57,7 @@ export class RestDialog extends foundry.applications.api.ApplicationV2 {
         // Short Rest button
         const shortRestBtn = document.createElement('button');
         shortRestBtn.className = 'bg3-button bg3-button-primary';
-        shortRestBtn.innerHTML = '<i class="fas fa-campfire"></i> ' + game.i18n.localize('DND5E.ShortRest');
+        shortRestBtn.innerHTML = '<i class="fas fa-campfire"></i> ' + game.i18n.localize(`${MODULE_ID}.RestDialog.ShortRest`);
         shortRestBtn.addEventListener('click', async () => {
             await this.takeShortRest();
         });
@@ -64,7 +66,7 @@ export class RestDialog extends foundry.applications.api.ApplicationV2 {
         // Long Rest button
         const longRestBtn = document.createElement('button');
         longRestBtn.className = 'bg3-button bg3-button-primary';
-        longRestBtn.innerHTML = '<i class="fas fa-tent"></i> ' + game.i18n.localize('DND5E.LongRest');
+        longRestBtn.innerHTML = '<i class="fas fa-tent"></i> ' + game.i18n.localize(`${MODULE_ID}.RestDialog.LongRest`);
         longRestBtn.addEventListener('click', async () => {
             await this.takeLongRest();
         });
@@ -100,7 +102,7 @@ export class RestDialog extends foundry.applications.api.ApplicationV2 {
             this.close();
             await this.actor.shortRest();
         } else {
-            ui.notifications.error('Short rest not available for this actor');
+            ui.notifications.error(game.i18n.localize(`${MODULE_ID}.Notifications.ShortRestNotAvailable`));
         }
     }
 
@@ -113,7 +115,7 @@ export class RestDialog extends foundry.applications.api.ApplicationV2 {
             this.close();
             await this.actor.longRest();
         } else {
-            ui.notifications.error('Long rest not available for this actor');
+            ui.notifications.error(game.i18n.localize(`${MODULE_ID}.Notifications.LongRestNotAvailable`));
         }
     }
 

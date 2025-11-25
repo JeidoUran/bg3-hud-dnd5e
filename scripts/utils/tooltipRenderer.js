@@ -386,7 +386,7 @@ async function getActiveEffectCardData(effect, enrichmentOptions = {}) {
         name: effect.label || effect.name || 'Effect',
         type: 'effect',
         img: effect.img || effect.icon || 'icons/svg/aura.svg',
-        subtitle: 'Active Effect',
+        subtitle: game.i18n.localize('bg3-hud-dnd5e.Tooltips.ActiveEffect'),
         config: CONFIG.DND5E,
         controlHints: game.settings.get("dnd5e", "controlHints"),
         description: {

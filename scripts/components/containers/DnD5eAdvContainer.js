@@ -31,8 +31,8 @@ export class DnD5eAdvContainer extends BG3Component {
             {
                 type: 'div',
                 key: 'advBtn',
-                tooltip: 'Left-click to set Advantage to roll only.<br>Right-click to toggle.',
-                label: 'ADV',
+                tooltip: () => game.i18n.localize(`${MODULE_ID}.Advantage.AdvTooltip`),
+                label: () => game.i18n.localize(`${MODULE_ID}.Advantage.ADV`),
                 events: {
                     'mouseup': this.setState.bind(this),
                 }
@@ -40,8 +40,8 @@ export class DnD5eAdvContainer extends BG3Component {
             {
                 type: 'div',
                 key: 'disBtn',
-                tooltip: 'Left-click to set Disadvantage to roll only.<br>Right-click to toggle.',
-                label: 'DIS',
+                tooltip: () => game.i18n.localize(`${MODULE_ID}.Advantage.DisTooltip`),
+                label: () => game.i18n.localize(`${MODULE_ID}.Advantage.DIS`),
                 events: {
                     'mouseup': this.setState.bind(this),
                 }
@@ -102,7 +102,8 @@ export class DnD5eAdvContainer extends BG3Component {
         
         // Add tooltip
         if (btnData.tooltip) {
-            button.dataset.tooltip = btnData.tooltip;
+            const tooltipText = typeof btnData.tooltip === 'function' ? btnData.tooltip() : btnData.tooltip;
+            button.dataset.tooltip = tooltipText;
             button.dataset.tooltipDirection = btnData.tooltipDirection || 'UP';
             if (btnData.tooltipClass) {
                 button.dataset.tooltipClass = btnData.tooltipClass;
@@ -112,7 +113,8 @@ export class DnD5eAdvContainer extends BG3Component {
         // Add label
         if (btnData.label) {
             const label = document.createElement('span');
-            label.textContent = btnData.label;
+            const labelText = typeof btnData.label === 'function' ? btnData.label() : btnData.label;
+            label.textContent = labelText;
             button.appendChild(label);
         }
 

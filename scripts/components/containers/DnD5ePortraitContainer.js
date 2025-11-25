@@ -97,7 +97,7 @@ export async function createDnD5ePortraitContainer() {
                 const deathBtn = this.createElement('div', ['hp-control-death']);
                 // Mark as UI element to prevent system tooltips (dnd5e2, etc.) from showing
                 deathBtn.dataset.bg3Ui = 'true';
-                deathBtn.innerHTML = '<i class="fas fa-skull" data-tooltip="Set to 0 HP"></i>';
+                deathBtn.innerHTML = `<i class="fas fa-skull" data-tooltip="${game.i18n.localize('bg3-hud-dnd5e.Portrait.SetTo0HP')}"></i>`;
                 this.addEventListener(deathBtn, 'click', async (event) => {
                     event.preventDefault();
                     event.stopPropagation();
@@ -152,7 +152,7 @@ export async function createDnD5ePortraitContainer() {
                 const fullBtn = this.createElement('div', ['hp-control-full']);
                 // Mark as UI element to prevent system tooltips (dnd5e2, etc.) from showing
                 fullBtn.dataset.bg3Ui = 'true';
-                fullBtn.innerHTML = '<i class="fas fa-heart" data-tooltip="Full Heal"></i>';
+                fullBtn.innerHTML = `<i class="fas fa-heart" data-tooltip="${game.i18n.localize('bg3-hud-dnd5e.Portrait.FullHeal')}"></i>`;
                 this.addEventListener(fullBtn, 'click', async (event) => {
                     event.preventDefault();
                     event.stopPropagation();

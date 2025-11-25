@@ -1,5 +1,7 @@
 import { FilterContainer } from '/modules/bg3-hud-core/scripts/components/containers/FilterContainer.js';
 
+const MODULE_ID = 'bg3-hud-dnd5e';
+
 /**
  * D&D 5e Filter Container
  * Provides action type and spell slot filters for D&D 5e
@@ -64,7 +66,7 @@ export class DnD5eFilterContainer extends FilterContainer {
         // Action type filters
         filters.push({
             id: 'action',
-            label: 'Action',
+            label: game.i18n.localize(`${MODULE_ID}.Filters.Action`),
             symbol: 'fa-circle',
             classes: ['action-type-button'],
             color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-action')?.trim() || '#ff6b6b',
@@ -73,7 +75,7 @@ export class DnD5eFilterContainer extends FilterContainer {
 
         filters.push({
             id: 'bonus',
-            label: 'Bonus Action',
+            label: game.i18n.localize(`${MODULE_ID}.Filters.BonusAction`),
             symbol: 'fa-triangle',
             classes: ['action-type-button'],
             color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-bonus')?.trim() || '#4ecdc4',
@@ -82,7 +84,7 @@ export class DnD5eFilterContainer extends FilterContainer {
 
         filters.push({
             id: 'reaction',
-            label: 'Reaction',
+            label: game.i18n.localize(`${MODULE_ID}.Filters.Reaction`),
             symbol: 'fa-sparkle',
             classes: ['action-type-button'],
             color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-reaction')?.trim() || '#95e1d3',
@@ -93,7 +95,7 @@ export class DnD5eFilterContainer extends FilterContainer {
         if (this._hasLegendaryActions()) {
             filters.push({
                 id: 'legendary',
-                label: 'Legendary Action',
+                label: game.i18n.localize(`${MODULE_ID}.Filters.LegendaryAction`),
                 symbol: 'fa-dragon',
                 classes: ['action-type-button'],
                 color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-legendary')?.trim() || '#ffd700',
@@ -103,7 +105,7 @@ export class DnD5eFilterContainer extends FilterContainer {
 
         filters.push({
             id: 'feature',
-            label: 'Feature',
+            label: game.i18n.localize(`${MODULE_ID}.Filters.Feature`),
             symbol: 'fa-star',
             classes: ['action-type-button'],
             color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-feature')?.trim() || '#f38181',
@@ -115,7 +117,7 @@ export class DnD5eFilterContainer extends FilterContainer {
         if (cantrips.length > 0) {
             filters.push({
                 id: 'spell',
-                label: 'Cantrip',
+                label: game.i18n.localize(`${MODULE_ID}.Filters.Cantrip`),
                 short: 'C',
                 classes: ['spell-level-button', 'spell-cantrip-box'],
                 color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-cantrip')?.trim() || '#9b59b6',
@@ -131,7 +133,7 @@ export class DnD5eFilterContainer extends FilterContainer {
             if (spellLevel?.max > 0) {
                 filters.push({
                     id: 'spell',
-                    label: 'Spell Level',
+                    label: game.i18n.localize(`${MODULE_ID}.Filters.SpellLevel`),
                     short: this._getRomanNumeral(level),
                     classes: ['spell-level-button'],
                     color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-spell')?.trim() || '#8e44ad',
@@ -147,7 +149,7 @@ export class DnD5eFilterContainer extends FilterContainer {
         if (pactMagic?.max > 0) {
             filters.push({
                 id: 'spell',
-                label: 'Pact Magic',
+                label: game.i18n.localize(`${MODULE_ID}.Filters.PactMagic`),
                 short: 'P',
                 classes: ['spell-level-button', 'spell-pact-box'],
                 color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-pact')?.trim() || '#9c27b0',

@@ -1,5 +1,7 @@
 import { AutoPopulateFramework } from '/modules/bg3-hud-core/scripts/features/AutoPopulateFramework.js';
 
+const MODULE_ID = 'bg3-hud-dnd5e';
+
 /**
  * D&D 5e Auto Populate Implementation
  * Provides D&D 5e-specific item filtering and population logic
@@ -12,37 +14,37 @@ export class DnD5eAutoPopulate extends AutoPopulateFramework {
     async getItemTypeChoices() {
         return [
             {
-                group: 'Combat',
+                group: game.i18n.localize(`${MODULE_ID}.AutoPopulate.Groups.Combat`),
                 choices: [
-                    { value: 'weapon', label: 'Weapons' },
-                    { value: 'feat', label: 'Features & Actions' },
-                    { value: 'spell', label: 'Spells' }
+                    { value: 'weapon', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Weapons`) },
+                    { value: 'feat', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.FeaturesActions`) },
+                    { value: 'spell', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Spells`) }
                 ]
             },
             {
-                group: 'Consumables',
+                group: game.i18n.localize(`${MODULE_ID}.AutoPopulate.Groups.Consumables`),
                 choices: [
-                    { value: 'consumable:ammo', label: 'Ammunition' },
-                    { value: 'consumable:potion', label: 'Potions' },
-                    { value: 'consumable:poison', label: 'Poisons' },
-                    { value: 'consumable:scroll', label: 'Scrolls' },
-                    { value: 'consumable:food', label: 'Food & Drink' }
+                    { value: 'consumable:ammo', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Ammunition`) },
+                    { value: 'consumable:potion', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Potions`) },
+                    { value: 'consumable:poison', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Poisons`) },
+                    { value: 'consumable:scroll', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Scrolls`) },
+                    { value: 'consumable:food', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.FoodDrink`) }
                 ]
             },
             {
-                group: 'Wondrous',
+                group: game.i18n.localize(`${MODULE_ID}.AutoPopulate.Groups.Wondrous`),
                 choices: [
-                    { value: 'equipment', label: 'Equipment' },
-                    { value: 'consumable:wand', label: 'Wands' },
-                    { value: 'consumable:rod', label: 'Rods' },
-                    { value: 'consumable:trinket', label: 'Trinkets' }
+                    { value: 'equipment', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Equipment`) },
+                    { value: 'consumable:wand', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Wands`) },
+                    { value: 'consumable:rod', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Rods`) },
+                    { value: 'consumable:trinket', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Trinkets`) }
                 ]
             },
             {
-                group: 'Other',
+                group: game.i18n.localize(`${MODULE_ID}.AutoPopulate.Groups.Other`),
                 choices: [
-                    { value: 'tool', label: 'Tools' },
-                    { value: 'loot', label: 'Loot' }
+                    { value: 'tool', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Tools`) },
+                    { value: 'loot', label: game.i18n.localize(`${MODULE_ID}.AutoPopulate.ItemTypes.Loot`) }
                 ]
             }
         ];
