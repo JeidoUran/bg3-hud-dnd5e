@@ -8,15 +8,16 @@
 }
 
 #bg3-hotbar-container .bg3-cpr-generic-actions-container .cpr-generic-actions-btn {
-    background: var(--bg3-background-color, rgba(40, 40, 40, 0.8));
-    border: var(--bg3-border-size, 2px) solid var(--bg3-border-color, rgba(255, 255, 255, 0.2));
+    background: var(--bg3-background-color);
+    border: var(--bg3-border-size) solid var(--bg3-border-color);
     border-radius: var(--bg3-border-radius, 8px);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--bg3-text-color, #ddd);
+    color: var(--bg3-text-color);
     font-size: 0.8em;
-    height: 163px; /* Match combined height of ADV + gap + DIS (79px + 5px + 79px) */
+    height: 163px;
+    /* Match combined height of ADV + gap + DIS (79px + 5px + 79px) */
     transition: all 0.2s ease;
     padding: 5px;
     writing-mode: vertical-rl;
@@ -26,13 +27,12 @@
 }
 
 #bg3-hotbar-container .bg3-cpr-generic-actions-container .cpr-generic-actions-btn:hover {
-    border-color: var(--bg3-border-color-hover, rgba(255, 255, 255, 0.4));
-    background-color: var(--bg3-background-color-hover, rgba(60, 60, 60, 0.9));
-    color: var(--bg3-text-color-hover, #fff);
+    border-color: var(--bg3-border-color-hover);
+    background-color: var(--bg3-background-color-hover);
+    color: var(--bg3-text-color-hover);
 }
 
-#bg3-hotbar-container .bg3-cpr-generic-actions-container .cpr-generic-actions-btn:active {
-}
+#bg3-hotbar-container .bg3-cpr-generic-actions-container .cpr-generic-actions-btn:active {}
 
 #bg3-hotbar-container .bg3-cpr-generic-actions-container .cpr-generic-actions-label {
     pointer-events: none;
