@@ -42,7 +42,7 @@ Check out my other module(s):
 ## Requirements
 
 - **Foundry VTT**: Version 13 or higher
-- **Required Module**: bg3-hud-core (version 0.1.0 or higher)
+- **Required Module**: bg3-hud-core (version 0.1.1 or higher)
 - **System**: D&D 5e (version 5.0.0 or higher, verified with 5.1.9)
 
 ## Acknowledgments
