@@ -1,4 +1,7 @@
 ## [0.1.3] - 2025-12-17
+### Added
+- **Prepared Spell Filtering**: Separate settings for Players (default: on) and NPCs (default: off) to filter spell containers to only show prepared spells. At-will, innate, and pact magic spells are always included.
+
 ### Changed
 - **Macro Support**: Removed redundant macro handling - now delegated to core for system-agnostic execution.
 

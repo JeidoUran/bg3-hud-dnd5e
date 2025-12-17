@@ -207,7 +207,7 @@ export class DnD5eAutoPopulate extends AutoPopulateFramework {
 
     /**
      * Check if spell is usable (prepared, always prepared, etc.)
-     * When 'autoPopulatePreparedSpellsOnly' is enabled (default), only includes:
+     * When filtering is enabled for the actor type, only includes:
      * - Prepared spells (system.prepared !== 0)
      * - At-will, innate, pact magic spells (method !== "spell")
      * When disabled, includes all spells with a valid casting method.
@@ -230,14 +230,18 @@ export class DnD5eAutoPopulate extends AutoPopulateFramework {
             return true;
         }
 
-        // For learned spells with method="spell", check preparation if setting is enabled
-        const preparedOnly = game.settings.get(MODULE_ID, 'autoPopulatePreparedSpellsOnly');
-        if (!preparedOnly) {
-            // Setting disabled: include all learned spells
+        // For learned spells with method="spell", check preparation based on actor type
+        const isNPC = actor.type === 'npc';
+        const shouldFilter = isNPC
+            ? game.settings.get(MODULE_ID, 'filterPreparedSpellsNPCs')
+            : game.settings.get(MODULE_ID, 'filterPreparedSpellsPlayers');
+
+        if (!shouldFilter) {
+            // Filtering disabled for this actor type: include all learned spells
             return true;
         }
 
-        // Setting enabled: only include prepared spells (prepared !== 0)
+        // Filtering enabled: only include prepared spells (prepared !== 0)
         const prepared = sys.prepared ?? 0;
         return prepared !== 0;
     }

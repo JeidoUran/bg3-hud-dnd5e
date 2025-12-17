@@ -258,14 +258,24 @@ export function registerSettings() {
     default: false
   });
 
-  // Auto-populate only prepared spells setting
-  game.settings.register(MODULE_ID, 'autoPopulatePreparedSpellsOnly', {
-    name: `${MODULE_ID}.Settings.AutoPopulatePreparedSpellsOnly`,
-    hint: `${MODULE_ID}.Settings.AutoPopulatePreparedSpellsOnlyHint`,
+  // Filter to prepared spells only - Players
+  game.settings.register(MODULE_ID, 'filterPreparedSpellsPlayers', {
+    name: `${MODULE_ID}.Settings.FilterPreparedSpellsPlayers`,
+    hint: `${MODULE_ID}.Settings.FilterPreparedSpellsPlayersHint`,
     scope: 'world',
     config: false,
     type: Boolean,
     default: true
+  });
+
+  // Filter to prepared spells only - NPCs
+  game.settings.register(MODULE_ID, 'filterPreparedSpellsNPCs', {
+    name: `${MODULE_ID}.Settings.FilterPreparedSpellsNPCs`,
+    hint: `${MODULE_ID}.Settings.FilterPreparedSpellsNPCsHint`,
+    scope: 'world',
+    config: false,
+    type: Boolean,
+    default: false
   });
 
   // Auto-populate configuration setting
@@ -296,7 +306,7 @@ export function registerSettings() {
     moduleId: MODULE_ID,
     titleKey: `${MODULE_ID}.Settings.AutoPopulate.MenuTitle`,
     sections: [
-      { legend: `${MODULE_ID}.Settings.AutoPopulate.Legend`, keys: ['autoPopulateEnabled', 'autoPopulatePlayerCharacters', 'autoPopulatePassivesEnabled', 'autoPopulatePreparedSpellsOnly'] }
+      { legend: `${MODULE_ID}.Settings.AutoPopulate.Legend`, keys: ['autoPopulateEnabled', 'autoPopulatePlayerCharacters', 'autoPopulatePassivesEnabled', 'filterPreparedSpellsPlayers', 'filterPreparedSpellsNPCs'] }
     ]
   });
 

@@ -33,8 +33,10 @@
       "AutoPopulateOnTokenCreationHint": "Automatically populate hotbar grids with items when a token is created",
       "AutoPopulatePlayerCharacters": "Allow Auto-populate for Player Characters",
       "AutoPopulatePlayerCharactersHint": "⚠️ WARNING: This overrides the default behavior and allows auto-population for player characters. This is NOT recommended as players should have freedom to customize their own HUD. Only enable if you understand the implications.",
-      "AutoPopulatePreparedSpellsOnly": "Prepared Spells Only",
-      "AutoPopulatePreparedSpellsOnlyHint": "When enabled, only includes prepared spells during auto-populate. At-will, innate, and pact magic spells are always included. Disable to include all known spells.",
+      "FilterPreparedSpellsPlayers": "Filter Prepared Spells (Players)",
+      "FilterPreparedSpellsPlayersHint": "Only show prepared spells for player characters. At-will, innate, and pact magic spells are always included.",
+      "FilterPreparedSpellsNPCs": "Filter Prepared Spells (NPCs)",
+      "FilterPreparedSpellsNPCsHint": "Only show prepared spells for NPCs. At-will, innate, and pact magic spells are always included.",
       "AutoPopulateConfigurationHint": "Configure which item types to auto-populate in each grid (restricted to GM)",
       "Display": {
         "MenuTitle": "Display Settings",
