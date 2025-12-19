@@ -1,3 +1,7 @@
+## [0.1.6] - 2025-12-19
+### Fixed
+- **Pact Slots Filter**: Fixed issue where the Pact Magic filter button would not appear in the filter list even when the actor had Pact Magic spells.
+
 ## [0.1.5] - 2025-12-19
 ### Fixed
 - **Monster Spell Auto-Populate**: Fixed issue where spells from monsters (MM 2024 and earlier) would not appear in the spell grid on token creation. CPR auto-populate now runs after all grids are populated via core's `onTokenCreationComplete` hook, preventing race conditions with state saving.

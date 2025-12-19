@@ -31,23 +31,23 @@ export class DnD5eFilterContainer extends FilterContainer {
         const hasLegendaryItems = this.actor.items.some(item => {
             // Old system: check actionType
             if (item.system?.actionType === 'legendary') return true;
-            
+
             // New system: check activities
             if (item.system?.activities) {
                 const activities = item.system.activities;
                 if (activities instanceof Map) {
-                    return Array.from(activities.values()).some(activity => 
-                        activity.type === 'legendary' || 
+                    return Array.from(activities.values()).some(activity =>
+                        activity.type === 'legendary' ||
                         activity.actionType === 'legendary'
                     );
                 } else if (Array.isArray(activities)) {
-                    return activities.some(activity => 
-                        activity.type === 'legendary' || 
+                    return activities.some(activity =>
+                        activity.type === 'legendary' ||
                         activity.actionType === 'legendary'
                     );
                 }
             }
-            
+
             return false;
         });
 
@@ -153,7 +153,7 @@ export class DnD5eFilterContainer extends FilterContainer {
                 short: 'P',
                 classes: ['spell-level-button', 'spell-pact-box'],
                 color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-pact')?.trim() || '#9c27b0',
-                data: { 
+                data: {
                     isPact: true,
                     value: pactMagic.value,
                     max: pactMagic.max
@@ -188,15 +188,17 @@ export class DnD5eFilterContainer extends FilterContainer {
 
         const filterData = filter.data;
 
+        // Pact magic filter
+        if (filterData.isPact) {
+            const itemType = cell.dataset.itemType;
+            if (itemType !== 'spell') return false;
+            return cell.dataset.preparationMode === 'pact';
+        }
+
         // Handle spell level filtering
         if (filterData.level !== undefined) {
             const itemType = cell.dataset.itemType;
             if (itemType !== 'spell') return false;
-
-            // Pact magic filter
-            if (filterData.isPact) {
-                return cell.dataset.preparationMode === 'pact';
-            }
 
             // Spell level filter
             const cellLevel = parseInt(cell.dataset.level);
@@ -212,8 +214,8 @@ export class DnD5eFilterContainer extends FilterContainer {
         if (filterData.actionType) {
             const actionType = filterData.actionType;
             // Check both old system (actionType) and new system (activityActionTypes)
-            return cell.dataset.actionType === actionType || 
-                   cell.dataset.activityActionTypes?.split(',').includes(actionType);
+            return cell.dataset.actionType === actionType ||
+                cell.dataset.activityActionTypes?.split(',').includes(actionType);
         }
 
         return false;
