@@ -68,10 +68,73 @@ export async function createDnD5ePassivesContainer() {
         /**
          * Save selected passives to actor flags
          * @param {Array<string>} uuids - Array of selected UUIDs
+         * @param {boolean} saveToBaseActor - If true, save to base actor with persistence flag
          * @private
          */
-        async _saveSelectedPassives(uuids) {
+        async _saveSelectedPassives(uuids, saveToBaseActor = false) {
+            // Save to the token's actor (full UUIDs work here since they're for this specific token)
             await this.actor.setFlag(MODULE_ID, 'selectedPassives', uuids);
+
+            const baseActor = this._getBaseActor();
+            if (!baseActor || baseActor === this.actor) {
+                // Linked actor or no base actor - nothing more to do
+                return;
+            }
+
+            if (saveToBaseActor) {
+                // User wants to save for all tokens of this type
+                // Extract just the item IDs from UUIDs - these are universal across tokens
+                // UUID format: "Scene.xxx.Token.yyy.Actor.zzz.Item.ITEM_ID" or "Actor.zzz.Item.ITEM_ID"
+                const itemIds = uuids.map(uuid => {
+                    const parts = uuid.split('.');
+                    // Item ID is always the last part
+                    return parts[parts.length - 1];
+                });
+
+                // Save the item IDs (not UUIDs) and the persistence flag
+                await baseActor.setFlag(MODULE_ID, 'passivesItemIds', itemIds);
+                await baseActor.setFlag(MODULE_ID, 'passivesSaveToBase', true);
+                console.log('BG3 HUD D&D 5e | Saved item IDs to base actor:', itemIds);
+            } else {
+                // User turned off the toggle - clear the flags from base actor
+                // This reverts to normal auto-populate behavior for new tokens
+                const wasEnabled = baseActor.getFlag(MODULE_ID, 'passivesSaveToBase');
+                if (wasEnabled) {
+                    await baseActor.unsetFlag(MODULE_ID, 'passivesSaveToBase');
+                    await baseActor.unsetFlag(MODULE_ID, 'passivesItemIds');
+                    console.log('BG3 HUD D&D 5e | Cleared passives from base actor, reverting to normal auto-populate');
+                }
+            }
+        }
+
+        /**
+         * Get the base actor for an unlinked token (the sidebar actor)
+         * @returns {Actor|null}
+         * @private
+         */
+        _getBaseActor() {
+            // For unlinked tokens, the base actor is in game.actors with the token's actorId
+            if (!this.token) return null;
+
+            const tokenDoc = this.token.document ?? this.token;
+            const actorId = tokenDoc.actorId;
+
+            if (actorId) {
+                return game.actors.get(actorId);
+            }
+
+            return null;
+        }
+
+        /**
+         * Check if the current token is unlinked (synthetic actor)
+         * @returns {boolean}
+         * @private
+         */
+        _isUnlinkedToken() {
+            if (!this.token) return false;
+            const tokenDoc = this.token.document ?? this.token;
+            return tokenDoc.actorLink === false;
         }
 
         /**
@@ -90,15 +153,37 @@ export async function createDnD5ePassivesContainer() {
                 selected: selected.has(feature.uuid)
             }));
 
+            // Check if this is an unlinked token - if so, offer to save to base actor
+            const isUnlinked = this._isUnlinkedToken();
+            let footerToggles;
+
+            if (isUnlinked) {
+                // Check if the base actor already has the "save for all" mode enabled
+                const baseActor = this._getBaseActor();
+                const saveToBaseEnabled = baseActor?.getFlag(MODULE_ID, 'passivesSaveToBase') ?? false;
+
+                footerToggles = [{
+                    key: 'saveToBaseActor',
+                    label: game.i18n.localize('bg3-hud-dnd5e.Passives.SaveForAllTokens'),
+                    hint: game.i18n.localize('bg3-hud-dnd5e.Passives.SaveForAllTokensHint'),
+                    checked: saveToBaseEnabled  // Pre-check if already enabled on base actor
+                }];
+            }
+
             // Show dialog using core utility
-            const selectedIds = await showSelectionDialog({
+            const result = await showSelectionDialog({
                 title: game.i18n.localize('bg3-hud-dnd5e.Passives.SelectPassiveFeatures'),
-                items: items
+                items: items,
+                footerToggles
             });
 
             // If user confirmed (not cancelled), save the selection
-            if (selectedIds !== null) {
-                await this._saveSelectedPassives(selectedIds);
+            if (result !== null) {
+                // Handle both return formats (array for no toggles, object for toggles)
+                const selectedIds = Array.isArray(result) ? result : result.selectedIds;
+                const saveToBaseActor = result.toggles?.saveToBaseActor ?? false;
+
+                await this._saveSelectedPassives(selectedIds, saveToBaseActor);
                 // Don't call render() here - the actor flag update will trigger
                 // a refresh via the updateActor hook, which will efficiently
                 // update only the passives container

@@ -112,18 +112,22 @@ export class DnD5eFilterContainer extends FilterContainer {
             data: { itemType: 'feat' }
         });
 
-        // Cantrips
+        // Cantrips (standalone - not grouped)
         const cantrips = this.actor.items.filter(i => i.type === 'spell' && i.system.level === 0);
         if (cantrips.length > 0) {
             filters.push({
                 id: 'spell',
                 label: game.i18n.localize(`${MODULE_ID}.Filters.Cantrip`),
-                short: 'C',
+                centerLabel: 'C',
                 classes: ['spell-level-button', 'spell-cantrip-box'],
                 color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-cantrip')?.trim() || '#9b59b6',
                 data: { level: 0, value: 1, max: 1 }
             });
         }
+
+        // Build spell slot children for the group
+        const spellSlotChildren = [];
+        const spellColor = getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-spell')?.trim() || '#8e44ad';
 
         // Spell levels 1-9
         for (let level = 1; level <= 9; level++) {
@@ -131,12 +135,12 @@ export class DnD5eFilterContainer extends FilterContainer {
             const spellLevel = this.actor.system.spells?.[spellLevelKey];
 
             if (spellLevel?.max > 0) {
-                filters.push({
-                    id: 'spell',
+                spellSlotChildren.push({
+                    id: `spell-${level}`,
                     label: game.i18n.localize(`${MODULE_ID}.Filters.SpellLevel`),
                     short: this._getRomanNumeral(level),
                     classes: ['spell-level-button'],
-                    color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-spell')?.trim() || '#8e44ad',
+                    color: spellColor,
                     data: { level: level, value: spellLevel.value, max: spellLevel.max },
                     value: spellLevel.value,
                     max: spellLevel.max
@@ -147,12 +151,13 @@ export class DnD5eFilterContainer extends FilterContainer {
         // Pact Magic
         const pactMagic = this.actor.system.spells?.pact;
         if (pactMagic?.max > 0) {
-            filters.push({
-                id: 'spell',
+            const pactColor = getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-pact')?.trim() || '#9c27b0';
+            spellSlotChildren.push({
+                id: 'spell-pact',
                 label: game.i18n.localize(`${MODULE_ID}.Filters.PactMagic`),
                 short: 'P',
                 classes: ['spell-level-button', 'spell-pact-box'],
-                color: getComputedStyle(document.documentElement).getPropertyValue('--dnd5e-filter-pact')?.trim() || '#9c27b0',
+                color: pactColor,
                 data: {
                     isPact: true,
                     value: pactMagic.value,
@@ -160,6 +165,18 @@ export class DnD5eFilterContainer extends FilterContainer {
                 },
                 value: pactMagic.value,
                 max: pactMagic.max
+            });
+        }
+
+        // Add spell slots group if there are any spell slots
+        if (spellSlotChildren.length > 0) {
+            filters.push({
+                id: 'spell-slots-group',
+                type: 'group',
+                label: game.i18n.localize(`${MODULE_ID}.Filters.SpellSlots`),
+                symbol: 'fa-hat-wizard',
+                color: spellColor,
+                children: spellSlotChildren
             });
         }
 

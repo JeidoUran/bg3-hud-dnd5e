@@ -1,3 +1,18 @@
+## [0.1.9] - 2025-12-25
+
+> 🎄 **Merry Christmas and Happy Holidays!** 🎄
+
+### Changed
+- **Discord Link Updated**: Updated community Discord invite link.
+
+### Fixed
+- **Passive Features Reset**: Fixed issue where passive feature selections were reset when placing tokens (Issue #9):
+  - **Linked actors**: Auto-populate now checks if passives are already configured before overwriting.
+  - **Unlinked tokens**: Added "Save for all tokens of this type" toggle in passives dialog. When enabled, saves item IDs to the base actor so future tokens inherit those passives with correctly translated UUIDs.
+
+### Added
+- **Spell Slot Grouping**: Spell level filters (I-IX, Pact) are now grouped under an expandable "Spell Slots" button to reduce filter bar clutter. Cantrips remain standalone.
+
 ## [0.1.8] - 2025-12-21
 ### Changed
 - **Dialog Synchronization**: All dialogs are now synchronized to use consistent `DialogV2` styling and behavior (Issue #11).

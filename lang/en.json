@@ -98,6 +98,7 @@
       "Feature": "Feature",
       "Cantrip": "Cantrip",
       "SpellLevel": "Spell Level",
+      "SpellSlots": "Spell Slots",
       "PactMagic": "Pact Magic"
     },
     "Info": {
@@ -147,7 +148,9 @@
       "Save": "Save"
     },
     "Passives": {
-      "SelectPassiveFeatures": "Select Passive Features"
+      "SelectPassiveFeatures": "Select Passive Features",
+      "SaveForAllTokens": "Save for all tokens of this type",
+      "SaveForAllTokensHint": "Apply this selection to all future tokens of this actor"
     },
     "Advantage": {
       "ADV": "ADV",

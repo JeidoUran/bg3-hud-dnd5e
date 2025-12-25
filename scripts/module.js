@@ -388,6 +388,7 @@ class DnD5eAdapter {
     /**
      * Auto-populate passives on token creation
      * Selects all features that have no activities
+     * Only runs if passives haven't been configured yet (to avoid overwriting user selections)
      * @param {Actor} actor - The actor for the newly created token
      * @param {TokenDocument} tokenDocument - The token document (optional)
      */
@@ -397,6 +398,60 @@ class DnD5eAdapter {
         // Check if auto-populate passives is enabled
         if (!game.settings.get(MODULE_ID, 'autoPopulatePassivesEnabled')) {
             return;
+        }
+
+        // GUARD: Check if passives are already configured for this actor (token's synthetic actor)
+        // This prevents overwriting user selections when tokens already have passives set
+        const existingPassives = actor.getFlag(MODULE_ID, 'selectedPassives');
+        if (existingPassives && Array.isArray(existingPassives) && existingPassives.length > 0) {
+            console.log('BG3 HUD D&D 5e | Passives already configured on token actor, skipping auto-populate');
+            return;
+        }
+
+        // For unlinked tokens, check the BASE actor (from sidebar) for saved configuration
+        // If "Save for all tokens" was checked, the base actor will have:
+        // - 'passivesItemIds' flag with just the item IDs (not full UUIDs)
+        // - 'passivesSaveToBase' flag set to true
+        if (tokenDocument && tokenDocument.actorLink === false) {
+            const baseActorId = tokenDocument.actorId;
+            const baseActor = baseActorId ? game.actors.get(baseActorId) : null;
+
+            console.log('BG3 HUD D&D 5e | Checking base actor for unlinked token:', {
+                baseActorId,
+                baseActorFound: !!baseActor,
+                baseActorName: baseActor?.name
+            });
+
+            if (baseActor) {
+                // Check if "Save for all tokens" mode is active on base actor
+                const saveToBaseEnabled = baseActor.getFlag(MODULE_ID, 'passivesSaveToBase');
+                const baseItemIds = baseActor.getFlag(MODULE_ID, 'passivesItemIds');
+
+                console.log('BG3 HUD D&D 5e | Base actor flags:', {
+                    saveToBaseEnabled,
+                    baseItemIds: baseItemIds?.length ?? 0
+                });
+
+                if (saveToBaseEnabled && baseItemIds && Array.isArray(baseItemIds) && baseItemIds.length > 0) {
+                    // Translate item IDs to this token's UUIDs
+                    // The token's items will have the same item IDs but different UUID prefixes
+                    const tokenUuids = [];
+                    for (const itemId of baseItemIds) {
+                        const item = actor.items.get(itemId);
+                        if (item) {
+                            tokenUuids.push(item.uuid);
+                        } else {
+                            console.warn(`BG3 HUD D&D 5e | Item ID ${itemId} not found on token actor`);
+                        }
+                    }
+
+                    if (tokenUuids.length > 0) {
+                        console.log('BG3 HUD D&D 5e | Copying passives from base actor to unlinked token:', tokenUuids);
+                        await actor.setFlag(MODULE_ID, 'selectedPassives', tokenUuids);
+                        return;
+                    }
+                }
+            }
         }
 
         // Get all feat items
@@ -596,6 +651,37 @@ class DnD5eAdapter {
             }
         }
 
+        // Calculate depletion state for spells based on available slots
+        if (item.type === 'spell') {
+            const level = item.system?.level || 0;
+            if (level > 0) { // Cantrips (level 0) never deplete
+                const actor = item.actor;
+                if (actor) {
+                    const spells = actor.system?.spells;
+                    if (spells) {
+                        let canCast = false;
+
+                        // Check if any slot at this level or higher has remaining uses
+                        for (let l = level; l <= 9; l++) {
+                            const slot = spells[`spell${l}`];
+                            if (slot?.value > 0) {
+                                canCast = true;
+                                break;
+                            }
+                        }
+
+                        // Also check pact slots - they can cast spells up to their level
+                        if (!canCast && spells.pact?.value > 0 && spells.pact?.level >= level) {
+                            canCast = true;
+                        }
+
+                        // Set depleted flag for GridCell to consume
+                        cellData.depleted = !canCast;
+                    }
+                }
+            }
+        }
+
         return cellData;
     }
 
@@ -676,6 +762,82 @@ class DnD5eAdapter {
         }
 
         return { blocked: false };
+    }
+
+    /**
+     * Update cell depletion states based on actor changes
+     * Called by core's UpdateCoordinator on any actor update
+     * @param {Actor} actor - The actor that changed
+     * @param {Object} changes - The changes object from updateActor hook
+     */
+    updateCellDepletionStates(actor, changes) {
+        // Only process if spell slots actually changed
+        if (changes?.system?.spells === undefined) return;
+
+        const spells = actor.system?.spells;
+        if (!spells) return;
+
+        const hotbarApp = ui.BG3HUD_APP;
+        if (!hotbarApp?.components) return;
+
+        // Use requestAnimationFrame to avoid flashing by syncing with render cycle
+        requestAnimationFrame(() => {
+            // Collect spell cells from hotbar only (skip quickAccess to avoid CPR issues)
+            const allCells = [];
+            for (const containerKey of ['hotbar', 'weaponSets']) {
+                const container = hotbarApp.components[containerKey];
+                if (container?.gridContainers) {
+                    for (const grid of container.gridContainers) {
+                        if (grid?.cells) {
+                            allCells.push(...grid.cells);
+                        }
+                    }
+                }
+            }
+
+            for (const cell of allCells) {
+                // Defensive: ensure cell, data, and element exist and are stable
+                if (!cell?.data?.uuid) continue;
+                if (!cell?.element) continue;
+                if (!cell.element.isConnected) continue; // Element not in DOM
+
+                // Only process spell items
+                const itemType = cell.element.dataset?.itemType;
+                if (itemType !== 'spell') continue;
+
+                const level = parseInt(cell.element.dataset?.level) || 0;
+                if (level === 0) continue; // Cantrips never deplete
+
+                // Check if any slot at this level or higher has remaining uses
+                let canCast = false;
+                for (let l = level; l <= 9; l++) {
+                    const slot = spells[`spell${l}`];
+                    if (slot?.value > 0) {
+                        canCast = true;
+                        break;
+                    }
+                }
+                // Also check pact slots
+                if (!canCast && spells.pact?.value > 0 && spells.pact?.level >= level) {
+                    canCast = true;
+                }
+
+                // Update data for persistence
+                cell.data.depleted = !canCast;
+
+                // Update DOM
+                const img = cell.element.querySelector('.hotbar-item');
+                if (!canCast) {
+                    cell.element.classList.add('depleted');
+                    cell.element.setAttribute('data-depleted', 'true');
+                    if (img) img.classList.add('depleted');
+                } else {
+                    cell.element.classList.remove('depleted');
+                    cell.element.removeAttribute('data-depleted');
+                    if (img) img.classList.remove('depleted');
+                }
+            }
+        });
     }
 }
 
