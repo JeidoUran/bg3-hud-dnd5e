@@ -1,3 +1,14 @@
+## [0.1.10] - 2026-01-04
+
+### Added
+- **Portrait Scaling**: Implemented `getPortraitScale()` override to support "Scale with Token" option. Portrait container now resizes based on token scale, expanding upward and leftward.
+- **Tooltip Blacklist**: Adapter now passes `tooltipClassBlacklist` config to core, filtering out D&D 5e tooltip classes without hardcoding in core.
+- **Animated Portrait Support**: Uses core's `_createMediaElement()` for WEBM/MP4 animated token support. Health overlay bend mask skipped for video (incompatible technique).
+
+### Changed
+- **CPR Actions Menu**: Moved CPR Actions selector inside the Third Party Modules submenu as a button, reducing top-level settings clutter.
+- **Third Party Menu**: Third Party Modules submenu now builds sections dynamically based on installed modules (CPR, Midi-QoL). Only shows if at least one module is present (#11).
+
 ## [0.1.9] - 2025-12-25
 
 > 🎄 **Merry Christmas and Happy Holidays!** 🎄

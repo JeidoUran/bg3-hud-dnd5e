@@ -574,44 +574,23 @@ export async function createDnD5ePortraitContainer() {
         }
 
         /**
-         * Check if token scale should be applied to portrait
-         * @returns {boolean} True if scale should be applied
+         * Get portrait scale configuration
+         * Overrides core method to support D&D 5e token scaling option
+         * @returns {{enabled: boolean, scale: number}}
          */
-        shouldScaleWithToken() {
-            if (!this.actor || !this.token) return false;
+        getPortraitScale() {
+            if (!this.actor || !this.token) {
+                return { enabled: false, scale: 1 };
+            }
 
             const useTokenImage = this.actor.getFlag('bg3-hud-dnd5e', 'useTokenImage') ?? true;
             const scaleWithToken = this.actor.getFlag('bg3-hud-dnd5e', 'scaleWithToken') ?? false;
+            const tokenScale = this.token?.document?._source?.texture?.scaleX ?? 1;
 
-            // Only scale if using token image and scale option is enabled
-            return useTokenImage && scaleWithToken;
-        }
-
-        /**
-         * Get the token scale value
-         * @returns {number} Token scale (default 1)
-         */
-        getTokenScale() {
-            return this.token?.document?._source?.texture?.scaleX ?? 1;
-        }
-
-        /**
-         * Apply token scale to portrait image
-         * @param {HTMLElement} subContainer - The portrait image subcontainer
-         */
-        applyTokenScale(subContainer) {
-            if (!subContainer) return;
-
-            if (this.shouldScaleWithToken()) {
-                const scale = this.getTokenScale();
-                if (scale !== 1) {
-                    subContainer.style.setProperty('transform', `scale(${scale})`);
-                } else {
-                    subContainer.style.removeProperty('transform');
-                }
-            } else {
-                subContainer.style.removeProperty('transform');
-            }
+            return {
+                enabled: useTokenImage && scaleWithToken,
+                scale: tokenScale
+            };
         }
 
         /**
@@ -671,13 +650,12 @@ export async function createDnD5ePortraitContainer() {
             const portraitImageContainer = this.createElement('div', ['portrait-image-container']);
             const portraitImageSubContainer = this.createElement('div', ['portrait-image-subcontainer']);
 
-            // Portrait image
-            const img = this.createElement('img', ['portrait-image']);
-            img.src = imageSrc;
-            img.alt = this.actor?.name || 'Portrait';
+            // Portrait image/video (use core's _createMediaElement for webm support)
+            const mediaElement = this._createMediaElement(imageSrc, this.actor?.name || 'Portrait');
 
             // Health overlay (red damage indicator) - check setting
             const showHealthOverlay = game.settings.get('bg3-hud-dnd5e', 'showHealthOverlay') ?? true;
+            const isVideoPortrait = mediaElement.tagName.toLowerCase() === 'video';
             let healthOverlay = null;
 
             if (showHealthOverlay) {
@@ -687,15 +665,16 @@ export async function createDnD5ePortraitContainer() {
                 damageOverlay.style.opacity = '1';
                 healthOverlay.appendChild(damageOverlay);
 
-                // Apply alpha mask so overlays only affect non-transparent pixels of the image
-                portraitImageSubContainer.setAttribute('data-bend-mode', 'true');
-                // Use the resolved img.src (absolute URL) and quote it for CSS parsing safety
-                portraitImageSubContainer.style.setProperty('--bend-img', `url("${img.src}")`);
-                this.element.classList.add('use-bend-mask');
+                // Apply alpha mask for images (not compatible with video)
+                if (!isVideoPortrait) {
+                    portraitImageSubContainer.setAttribute('data-bend-mode', 'true');
+                    portraitImageSubContainer.style.setProperty('--bend-img', `url("${mediaElement.src}")`);
+                    this.element.classList.add('use-bend-mask');
+                }
             }
 
             // Assemble portrait image structure
-            portraitImageSubContainer.appendChild(img);
+            portraitImageSubContainer.appendChild(mediaElement);
             if (showHealthOverlay && healthOverlay) {
                 portraitImageSubContainer.appendChild(healthOverlay);
             }
@@ -706,8 +685,8 @@ export async function createDnD5ePortraitContainer() {
 
             this.element.appendChild(portraitImageContainer);
 
-            // Apply token scale if enabled
-            this.applyTokenScale(portraitImageSubContainer);
+            // Apply token scale if enabled (uses core's _applyPortraitScale with our getPortraitScale override)
+            this._applyPortraitScale(portraitImageSubContainer);
 
             // Register context menu for portrait image (right-click to toggle token/portrait)
             this._registerPortraitMenu(portraitImageContainer);
