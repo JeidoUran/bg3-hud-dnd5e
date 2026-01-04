@@ -650,13 +650,12 @@ export async function createDnD5ePortraitContainer() {
             const portraitImageContainer = this.createElement('div', ['portrait-image-container']);
             const portraitImageSubContainer = this.createElement('div', ['portrait-image-subcontainer']);
 
-            // Portrait image
-            const img = this.createElement('img', ['portrait-image']);
-            img.src = imageSrc;
-            img.alt = this.actor?.name || 'Portrait';
+            // Portrait image/video (use core's _createMediaElement for webm support)
+            const mediaElement = this._createMediaElement(imageSrc, this.actor?.name || 'Portrait');
 
             // Health overlay (red damage indicator) - check setting
             const showHealthOverlay = game.settings.get('bg3-hud-dnd5e', 'showHealthOverlay') ?? true;
+            const isVideoPortrait = mediaElement.tagName.toLowerCase() === 'video';
             let healthOverlay = null;
 
             if (showHealthOverlay) {
@@ -666,15 +665,16 @@ export async function createDnD5ePortraitContainer() {
                 damageOverlay.style.opacity = '1';
                 healthOverlay.appendChild(damageOverlay);
 
-                // Apply alpha mask so overlays only affect non-transparent pixels of the image
-                portraitImageSubContainer.setAttribute('data-bend-mode', 'true');
-                // Use the resolved img.src (absolute URL) and quote it for CSS parsing safety
-                portraitImageSubContainer.style.setProperty('--bend-img', `url("${img.src}")`);
-                this.element.classList.add('use-bend-mask');
+                // Apply alpha mask for images (not compatible with video)
+                if (!isVideoPortrait) {
+                    portraitImageSubContainer.setAttribute('data-bend-mode', 'true');
+                    portraitImageSubContainer.style.setProperty('--bend-img', `url("${mediaElement.src}")`);
+                    this.element.classList.add('use-bend-mask');
+                }
             }
 
             // Assemble portrait image structure
-            portraitImageSubContainer.appendChild(img);
+            portraitImageSubContainer.appendChild(mediaElement);
             if (showHealthOverlay && healthOverlay) {
                 portraitImageSubContainer.appendChild(healthOverlay);
             }
