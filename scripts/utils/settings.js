@@ -195,7 +195,7 @@ export function registerSettings() {
     scope: 'client',
     config: false,
     type: Boolean,
-    default: true,
+    default: false,
     onChange: () => ui.BG3HUD_APP?.updateDisplaySettings()
   });
 
