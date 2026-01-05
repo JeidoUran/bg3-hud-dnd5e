@@ -1,3 +1,8 @@
+## [0.1.11] - 2026-01-05
+
+### Fixed
+- **Target Selector Range**: Fixed touch range returning feet (5) instead of grid squares (1). Reach bonuses now also correctly convert to grid squares.
+
 ## [0.1.10] - 2026-01-04
 
 ### Added

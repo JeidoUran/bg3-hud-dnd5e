@@ -322,13 +322,16 @@ export function calculateRange({ item, activity = null, actor = null }) {
 
     if (units === 'touch') {
         rangeInfo.isTouch = true;
-        // Touch range is 1 grid unit (typically 5ft)
-        rangeInfo.range = canvas?.scene?.grid?.distance || 5;
+        // Touch range is 1 grid square (adjacent)
+        rangeInfo.range = 1;
+        rangeInfo.rangeInFeet = canvas?.scene?.grid?.distance || 5; // Keep feet for reference
 
-        // Check for reach bonus
+        // Check for reach bonus (in feet) - convert to squares
         const reach = rangeConfig.reach || item.system?.range?.reach;
         if (reach) {
-            rangeInfo.range = reach;
+            const sceneDistance = canvas?.scene?.grid?.distance || 5;
+            rangeInfo.range = reach / sceneDistance;
+            rangeInfo.rangeInFeet = reach;
         }
         return rangeInfo;
     }
