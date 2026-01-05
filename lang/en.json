@@ -99,7 +99,8 @@
       "Cantrip": "Cantrip",
       "SpellLevel": "Spell Level",
       "SpellSlots": "Spell Slots",
-      "PactMagic": "Pact Magic"
+      "PactMagic": "Pact Magic",
+      "ApothecaryMagic": "Apothecary Magic"
     },
     "Info": {
       "Skills": "Skills",

@@ -678,6 +678,11 @@ class DnD5eAdapter {
                             canCast = true;
                         }
 
+                        // Also check apothecary slots (SCGD compatibility)
+                        if (!canCast && spells.apothecary?.value > 0 && (spells.apothecary?.level ?? 1) >= level) {
+                            canCast = true;
+                        }
+
                         // Set depleted flag for GridCell to consume
                         cellData.depleted = !canCast;
                     }
@@ -822,6 +827,10 @@ class DnD5eAdapter {
                 }
                 // Also check pact slots
                 if (!canCast && spells.pact?.value > 0 && spells.pact?.level >= level) {
+                    canCast = true;
+                }
+                // Also check apothecary slots (SCGD compatibility)
+                if (!canCast && spells.apothecary?.value > 0 && (spells.apothecary?.level ?? 1) >= level) {
                     canCast = true;
                 }
 

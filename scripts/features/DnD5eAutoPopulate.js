@@ -321,7 +321,7 @@ export class DnD5eAutoPopulate extends AutoPopulateFramework {
      * Check if spell is usable (prepared, always prepared, etc.)
      * When filtering is enabled for the actor type, only includes:
      * - Prepared spells (system.prepared !== 0)
-     * - At-will, innate, pact magic spells (method !== "spell")
+     * - At-will, innate, pact, apothecary magic spells (method !== "spell")
      * When disabled, includes all spells with a valid casting method.
      * @param {Actor} actor - The actor
      * @param {Item} item - The spell item
