@@ -20,6 +20,7 @@ import { renderDnD5eTooltip } from './utils/tooltipRenderer.js';
 import { DnD5eMenuBuilder } from './components/menus/DnD5eMenuBuilder.js';
 import { DnD5eTargetingRules } from './utils/DnD5eTargetingRules.js';
 
+
 const MODULE_ID = 'bg3-hud-dnd5e';
 const ADVANTAGE_ROLL_EVENTS = [
     'dnd5e.preRollAttackV2',
@@ -142,6 +143,8 @@ Hooks.on('bg3HudReady', async (BG3HUD_API) => {
 
     // Register advantage/disadvantage hooks once
     registerAdvantageHooks();
+
+
 });
 
 /**
@@ -678,6 +681,11 @@ class DnD5eAdapter {
                             canCast = true;
                         }
 
+                        // Also check apothecary slots (SCGD compatibility)
+                        if (!canCast && spells.apothecary?.value > 0 && (spells.apothecary?.level ?? 1) >= level) {
+                            canCast = true;
+                        }
+
                         // Set depleted flag for GridCell to consume
                         cellData.depleted = !canCast;
                     }
@@ -822,6 +830,10 @@ class DnD5eAdapter {
                 }
                 // Also check pact slots
                 if (!canCast && spells.pact?.value > 0 && spells.pact?.level >= level) {
+                    canCast = true;
+                }
+                // Also check apothecary slots (SCGD compatibility)
+                if (!canCast && spells.apothecary?.value > 0 && (spells.apothecary?.level ?? 1) >= level) {
                     canCast = true;
                 }
 

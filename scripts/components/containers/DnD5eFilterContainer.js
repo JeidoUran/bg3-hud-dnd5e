@@ -1,4 +1,5 @@
 import { FilterContainer } from '/modules/bg3-hud-core/scripts/components/containers/FilterContainer.js';
+import { normalizeApothecarySlots } from '../../compatibility/scgd-apothecary.js';
 
 const MODULE_ID = 'bg3-hud-dnd5e';
 
@@ -168,6 +169,12 @@ export class DnD5eFilterContainer extends FilterContainer {
             });
         }
 
+        // Apothecary Magic (Sebastian Crowe's Guide to Drakkenheim compatibility)
+        const apothecarySlot = normalizeApothecarySlots(this.actor);
+        if (apothecarySlot) {
+            spellSlotChildren.push(apothecarySlot);
+        }
+
         // Add spell slots group if there are any spell slots
         if (spellSlotChildren.length > 0) {
             filters.push({
@@ -210,6 +217,13 @@ export class DnD5eFilterContainer extends FilterContainer {
             const itemType = cell.dataset.itemType;
             if (itemType !== 'spell') return false;
             return cell.dataset.preparationMode === 'pact';
+        }
+
+        // Apothecary magic filter (SCGD compatibility)
+        if (filterData.isApothecary) {
+            const itemType = cell.dataset.itemType;
+            if (itemType !== 'spell') return false;
+            return cell.dataset.preparationMode === 'apothecary';
         }
 
         // Handle spell level filtering
