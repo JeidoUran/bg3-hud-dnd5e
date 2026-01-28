@@ -147,9 +147,9 @@ export function getTargetRequirements({ item, activity = null }) {
         // Target type
         requirements.targetType = targetConfig.affects?.type || targetConfig.type || 'any';
 
-        // Target count
+        // Target count - D&D5e spells say "up to X targets", meaning min=1, max=X
         const count = targetConfig.affects?.count || targetConfig.value || 1;
-        requirements.minTargets = Math.max(1, count);
+        requirements.minTargets = 1;  // Always allow targeting at least 1 (Issue #23)
         requirements.maxTargets = count || 1;
 
         // Handle unlimited/special targets

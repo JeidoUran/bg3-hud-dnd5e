@@ -213,10 +213,11 @@ export async function createDnD5eWeaponSetContainer() {
             const currentGrid = this.gridContainers[currentActiveIndex];
 
             const resolveSetItems = async (grid) => {
-                if (!grid?.items) return [];
+                // Use grid.cells to get current cell data (grid.items is stale - set at construction)
+                if (!grid?.cells) return [];
                 const items = [];
-                for (const slotKey of Object.keys(grid.items)) {
-                    const cellData = grid.items[slotKey];
+                for (const cell of grid.cells) {
+                    const cellData = cell?.data;
                     if (!cellData?.uuid || cellData.isTwoHandedDuplicate) continue;
                     try {
                         const item = await fromUuid(cellData.uuid);
@@ -224,7 +225,7 @@ export async function createDnD5eWeaponSetContainer() {
                         if (!this._isWeaponOrShield(item)) continue;
                         items.push(item);
                     } catch (error) {
-                        console.warn('BG3 HUD D&D 5e | Failed to resolve item for weapon set slot', slotKey, error);
+                        console.warn('BG3 HUD D&D 5e | Failed to resolve item for weapon set cell', error);
                     }
                 }
                 return items;
