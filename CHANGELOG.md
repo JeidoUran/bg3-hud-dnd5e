@@ -1,3 +1,15 @@
+## [0.2.3] - 2026-01-28
+
+### Changed
+- **Dependency Update**: Updated core dependency to version 0.2.3, which includes:
+  - Fix for target selector min targets not updating when max is reduced (Issue #23).
+  - Fix for "Hide When BG3 HUD Visible" setting not working correctly (Issue #8).
+- **Discord Link Updated**: Updated community Discord invite link.
+
+### Fixed
+- **Innate Spell Depletion**: Fixed innate spells granted by features (e.g., racial spellcasting) being incorrectly greyed out when the actor has no spell slots. Innate/at-will/pact magic spells now check their own uses instead of spell slot availability. (Issue #16)
+- **Weapon Sets 2 & 3 Auto-Equip**: Fixed weapon sets 2 and 3 not auto-equipping/unequipping items when switching sets. The issue was that the switch logic was reading stale data from construction time instead of current cell data. (Issue #24)
+
 ## [0.2.2] - 2026-01-14
 
 ### Added

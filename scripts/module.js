@@ -657,10 +657,27 @@ class DnD5eAdapter {
             }
         }
 
-        // Calculate depletion state for spells based on available slots
+        // Calculate depletion state for spells
         if (item.type === 'spell') {
             const level = item.system?.level || 0;
-            if (level > 0) { // Cantrips (level 0) never deplete
+            // D&D 5e v5.1+: use .method instead of deprecated .preparation.mode
+            const method = item.system?.method ?? item.system?.preparation?.mode ?? 'spell';
+
+            if (level === 0) {
+                // Cantrips never deplete
+                cellData.depleted = false;
+            } else if (method !== 'spell') {
+                // Innate, at-will, pact magic, etc. - check the spell's own uses, not slots
+                // These spells have their own resource pool independent of spell slots
+                if (cellData.uses) {
+                    // Has uses configured - depleted when uses.value is 0
+                    cellData.depleted = cellData.uses.value <= 0;
+                } else {
+                    // No uses configured - can always be cast (at-will)
+                    cellData.depleted = false;
+                }
+            } else {
+                // Regular learned spells (method === 'spell') - check spell slots
                 const actor = item.actor;
                 if (actor) {
                     const spells = actor.system?.spells;
@@ -819,7 +836,16 @@ class DnD5eAdapter {
                 const level = parseInt(cell.element.dataset?.level) || 0;
                 if (level === 0) continue; // Cantrips never deplete
 
-                // Check if any slot at this level or higher has remaining uses
+                // Get the preparation mode from the dataset (set by decorateCellElement)
+                // Innate/at-will/pact spells don't use spell slots, so skip them
+                const preparationMode = cell.element.dataset?.preparationMode || 'spell';
+                if (preparationMode !== 'spell') {
+                    // Non-slot spells (innate, atwill, pact, etc.) - their depletion
+                    // is handled by their own uses, not by spell slot changes
+                    continue;
+                }
+
+                // Regular learned spells - check spell slots
                 let canCast = false;
                 for (let l = level; l <= 9; l++) {
                     const slot = spells[`spell${l}`];
